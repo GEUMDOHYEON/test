@@ -29,4 +29,5 @@ jobs:
       run: docker-compose up -d
 
     - name: test
-      run: docker-compose exec -i fastapi pytest
+      # run: docker-compose exec -i fastapi pytest
+      run: pytest
