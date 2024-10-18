@@ -22,11 +22,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install docker-compose -y
 
-    - name: Build the Docker image
-      run: docker-compose build
+    # - name: Build the Docker image
+    #   run: docker-compose build
       
     - name: up mysql and apache container runs
       run: docker-compose up -d
 
     - name: test
-      run: docker-compose exec fastapi pytest
+      run: docker-compose exec -i fastapi pytest
