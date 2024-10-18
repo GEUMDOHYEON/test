@@ -44,7 +44,12 @@ jobs:
       run: docker-compose up -d
       
     - name: Check environment variables
-      run: docker-compose exec db env
+      run: docker-compose exec -T db env
+
+    - name: Check environment variables in FastAPI
+      run: |
+        docker-compose exec fastapi python -c "import os; print(os.environ.get('MYSQL_USER'))"
+
       
     - name: test
       run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
