@@ -32,23 +32,28 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install docker-compose -y
+    - name: Access Secrets
+      run : |
+        echo "Secrets : ${{secrets.MYSQL_DATABASE}}"
 
-    # - name: Build the Docker image
-    #   run: docker-compose build
-      
-    - name: up mysql and apache container runs
-      run: docker-compose up -d
-      
-    # - name: Check environment variables
-    #   run: docker-compose exec -T db env
 
-    - name: Check environment variables in FastAPI
-      run: |
-        docker-compose exec fastapi python -c "import os; print(os.environ.get('MYSQL_USER'))"
+    # - name: Set up Docker Compose
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install docker-compose -y
+
+    # # - name: Build the Docker image
+    # #   run: docker-compose build
+      
+    # - name: up mysql and apache container runs
+    #   run: docker-compose up -d
+      
+    # # - name: Check environment variables
+    # #   run: docker-compose exec -T db env
+
+    # - name: Check environment variables in FastAPI
+    #   run: |
+    #     docker-compose exec fastapi python -c "import os; print(os.environ.get('MYSQL_USER'))"
 
       
     - name: test
