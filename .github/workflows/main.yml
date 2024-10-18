@@ -1,0 +1,26 @@
+name: FastAPI CI  
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker-compose build
+      
+    - name: up mysql and apache container runs
+      run: docker-compose up -d
+
+    - name: test
+      run: docker-compose exec fastapi pytest
