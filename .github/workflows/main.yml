@@ -42,7 +42,10 @@ jobs:
       
     - name: up mysql and apache container runs
       run: docker-compose up -d
-
+      
+    - name: Check environment variables
+      run: docker-compose exec db env
+      
     - name: test
       run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
 
