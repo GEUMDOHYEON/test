@@ -29,5 +29,5 @@ jobs:
       run: docker-compose up -d
 
     - name: test
-      # run: docker-compose exec -i fastapi pytest
-      run: pytest
+      run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
+
