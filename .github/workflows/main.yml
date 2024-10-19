@@ -32,30 +32,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Access Secrets
-      run : |
-        echo "Secrets : ${{secrets.MYSQL_DATABASE}}"
-
-
     - name: Set up Docker Compose
       run: |
         sudo apt-get update
         sudo apt-get install docker-compose -y
 
-    # - name: Build the Docker image
-    #   run: docker-compose build
+    - name: Create .env file with secrets
+      run: |
+        echo MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }} >> .env
+        echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} >> .env
+        echo MYSQL_USER=${{ secrets.MYSQL_USER }} >> .env
+        echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
       
     - name: up mysql and apache container runs
       run: docker-compose up -d
-      
-    # - name: Check environment variables
-    #   run: docker-compose exec -T db env
 
-    # - name: Check environment variables in FastAPI
-    #   run: |
-    #     docker-compose exec fastapi python -c "import os; print(os.environ.get('MYSQL_USER'))"
+    - name: Check environment variables
+      run: |
+        docker-compose exec -T db env
 
-      
     - name: test
       run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
 
