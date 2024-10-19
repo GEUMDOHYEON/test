@@ -1,0 +1,61 @@
+name: FastAPI CI  
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+        options: >-
+          --health-cmd "mysqladmin ping --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Access Secrets
+      run : |
+        echo "Secrets : ${{secrets.MYSQL_DATABASE}}"
+
+
+    - name: Set up Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install docker-compose -y
+
+    # - name: Build the Docker image
+    #   run: docker-compose build
+      
+    - name: up mysql and apache container runs
+      run: docker-compose up -d
+      
+    # - name: Check environment variables
+    #   run: docker-compose exec -T db env
+
+    # - name: Check environment variables in FastAPI
+    #   run: |
+    #     docker-compose exec fastapi python -c "import os; print(os.environ.get('MYSQL_USER'))"
+
+      
+    - name: test
+      run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
+
