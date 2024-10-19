@@ -28,11 +28,11 @@ def register(user:Register_User):
   user_dict = user.model_dump()
   user_email,user_password,user_name = user_dict.values()
   try:
-    sql4 = 'INSERT INTO Users(user_email, user_name, user_password) VALUES (%s, %s, %s)'
-    cur.execute(sql4,(user_email, user_name, user_password))
+    sql4 = 'INSERT INTO Users(user_email, user_password, user_name) VALUES (%s, %s, %s)'
+    cur.execute(sql4,(user_email, user_password, user_name))
 
     conn.commit()
-
+    return {f'{user_name}'}
   except:
     raise HTTPException(status_code=404, detail="회원가입 실패")
   
