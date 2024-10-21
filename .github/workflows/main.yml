@@ -59,12 +59,7 @@ jobs:
       run: |
         docker-compose exec -T db env
         
-    # - name: Wait for MySQL to be ready
-    #   run: |
-    #     while ! docker-compose exec db mysqladmin ping --silent; do
-    #       echo "Waiting for MySQL..."
-    #       sleep 5
-    #     done
+
 
     - name: test
       run: docker-compose exec -T fastapi pytest  # fastapi 컨테이너 안에서 pytest 실행
